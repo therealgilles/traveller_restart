@@ -137,6 +137,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-spinkit')
+    compile project(':react-native-blur')
+    compile project(':react-native-workers')
     compile project(':react-native-vector-icons')
     compile project(':react-native-i18n')
     compile project(':react-native-device-info')
