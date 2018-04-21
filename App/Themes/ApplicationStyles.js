@@ -9,6 +9,7 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
+      marginTop: Metrics.navBarHeight,
       backgroundColor: Colors.transparent
     },
     backgroundImage: {
@@ -20,38 +21,32 @@ const ApplicationStyles = {
     },
     container: {
       flex: 1,
-      paddingTop: Metrics.baseMargin,
-      backgroundColor: Colors.transparent
+      paddingTop: Metrics.baseMargin
     },
     section: {
       margin: Metrics.section,
-      padding: Metrics.baseMargin
+      padding: Metrics.baseMargin,
+      borderTopColor: Colors.frost,
+      borderTopWidth: 0.5,
+      borderBottomColor: Colors.frost,
+      borderBottomWidth: 1
     },
     sectionText: {
-      ...Fonts.style.normal,
-      paddingVertical: Metrics.doubleBaseMargin,
       color: Colors.snow,
       marginVertical: Metrics.smallMargin,
-      textAlign: 'center'
+      textAlign: 'center',
+      fontWeight: 'bold'
     },
     subtitle: {
       color: Colors.snow,
       padding: Metrics.smallMargin,
       marginBottom: Metrics.smallMargin,
       marginHorizontal: Metrics.smallMargin
-    },
-    titleText: {
-      ...Fonts.style.h2,
-      fontSize: 14,
-      color: Colors.text
     }
   },
   darkLabelContainer: {
-    padding: Metrics.smallMargin,
-    paddingBottom: Metrics.doubleBaseMargin,
-    borderBottomColor: Colors.border,
-    borderBottomWidth: 1,
-    marginBottom: Metrics.baseMargin
+    backgroundColor: Colors.cloud,
+    padding: Metrics.smallMargin
   },
   darkLabel: {
     fontFamily: Fonts.type.bold,
