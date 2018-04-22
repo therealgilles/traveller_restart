@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import MapActions from '../Redux/MapRedux'
 import { Colors, Images, Metrics } from '../Themes'
 import { CheckBox, Card, Button, List, ListItem, ButtonGroup } from 'react-native-elements'
-import SettingsList from 'react-native-settings-list';
+import SettingsList from 'react-native-settings-list'
 
 // external libs
 // import PushNotification from 'react-native-push-notification'

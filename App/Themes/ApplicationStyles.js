@@ -9,19 +9,19 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
-      marginTop: Metrics.navBarHeight,
-      backgroundColor: Colors.transparent
+      // marginTop: Metrics.navBarHeight,
+      backgroundColor: Colors.transparent,
     },
     backgroundImage: {
       position: 'absolute',
       top: 0,
       left: 0,
       bottom: 0,
-      right: 0
+      right: 0,
     },
     container: {
       flex: 1,
-      paddingTop: Metrics.baseMargin
+      paddingTop: Metrics.baseMargin,
     },
     section: {
       margin: Metrics.section,
@@ -29,34 +29,34 @@ const ApplicationStyles = {
       borderTopColor: Colors.frost,
       borderTopWidth: 0.5,
       borderBottomColor: Colors.frost,
-      borderBottomWidth: 1
+      borderBottomWidth: 1,
     },
     sectionText: {
       color: Colors.snow,
       marginVertical: Metrics.smallMargin,
       textAlign: 'center',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
     subtitle: {
       color: Colors.snow,
       padding: Metrics.smallMargin,
       marginBottom: Metrics.smallMargin,
-      marginHorizontal: Metrics.smallMargin
+      marginHorizontal: Metrics.smallMargin,
     }
   },
   darkLabelContainer: {
     backgroundColor: Colors.cloud,
-    padding: Metrics.smallMargin
+    padding: Metrics.smallMargin,
   },
   darkLabel: {
     fontFamily: Fonts.type.bold,
-    color: Colors.snow
+    color: Colors.snow,
   },
   groupContainer: {
     margin: Metrics.smallMargin,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   sectionTitle: {
     ...Fonts.style.h4,
@@ -68,7 +68,7 @@ const ApplicationStyles = {
     borderWidth: 1,
     borderColor: Colors.ember,
     alignItems: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
   }
 }
 

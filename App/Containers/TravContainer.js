@@ -73,7 +73,7 @@ const transportModeInfo = {
   'walk'    : { provider: 'here',    radius: 15000, icon: 'md-walk',    appleMaps: 'w', googleMaps: 'walking'   },
   'bike'    : { provider: 'navitia', radius: 25000, icon: 'md-bicycle', appleMaps: 'w', googleMaps: 'bicycling' },
   'car'     : { provider: 'here',    radius: 50000, icon: 'car',        appleMaps: 'd', googleMaps: 'driving'   },
-  'transit' : { provider: 'navitia', radius: 50000, icon: 'bus',        appleMaps: 'r', googleMaps: 'transit'   },
+  'transit' : { provider: 'navitia', radius: 50000, icon: 'train',      appleMaps: 'r', googleMaps: 'transit'   },
 }
 
 const placesInfo = {
@@ -436,12 +436,16 @@ class TravContainer extends React.Component {
   }
 
   _renderSlide = props => (
-    <View style={[styles.slide,{ backgroundColor: props.backgroundColor }]}>
+    <View style={[styles.slide,{ backgroundColor: props.backgroundColor, width: props.width }]}>
       <View><Image source={ props.image }/></View>
       <View level={10}><Text style={styles.textTitle}>{props.title}</Text></View>
       <View level={15}><Text style={styles.text}>{props.text}</Text></View>
       <View level={8}><Text style={styles.text}>{props.subtext}</Text></View>
     </View>
+  )
+
+  _renderSlideButton = text => (
+    <Text style={[styles.slideButtonText]}>{text}</Text>
   )
 
   render () {
@@ -786,7 +790,11 @@ class TravContainer extends React.Component {
             <AppIntroSlider
               slides={slides}
               renderItem={this._renderSlide}
+              showPrevButton
               onDone={toggleTutorialHasRun}
+              renderPrevButton={() => this._renderSlideButton('Back')}
+              renderNextButton={() => this._renderSlideButton('Next')}
+              renderDoneButton={() => this._renderSlideButton('Go!')}
             />
           )
         }
