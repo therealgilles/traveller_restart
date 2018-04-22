@@ -77,6 +77,14 @@ export default StyleSheet.create({
   text: {
     color: '#fff',
     fontSize: 20,
-    // fontWeight: 'bold',
+    fontWeight: 'bold',
+  },
+  slideButtonText: {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 18,
+    padding: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

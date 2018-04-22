@@ -27,7 +27,7 @@ const transportIconList = {
   'walk'    : 'md-walk',
   'bike'    : 'md-bicycle',
   'car'     : 'car',
-  'transit' : 'bus',
+  'transit' : 'train',
 }
 
 export const INITIAL_STATE = Immutable({
