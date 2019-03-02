@@ -22,7 +22,7 @@
   NSString *googleAPIKey = [ReactNativeConfig envFor:@"GOOGLE_KEY"];
   [GMSServices provideAPIKey:googleAPIKey];
 
-  #if DEBUG
+  #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   #else
     jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
@@ -51,7 +51,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  // Keep  splash screen displayed during the transition
+  // Keep splash screen displayed during the transition
   // UIView* launchScreenView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] objectAtIndex:0];
   // launchScreenView.frame = self.window.bounds;
   // rootView.loadingView = launchScreenView;

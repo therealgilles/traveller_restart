@@ -1,6 +1,5 @@
-import { StackNavigator } from 'react-navigation'
+import { createStackNavigator, createAppContainer } from 'react-navigation'
 import LaunchScreen from '../Containers/LaunchScreen'
-import LoginScreen from '../Containers/LoginScreen'
 import DeviceInfoScreen from '../Containers/DeviceInfoScreen'
 import TravContainer from '../Containers/TravContainer'
 import SettingsScreen from '../Containers/SettingsScreen'
@@ -14,7 +13,7 @@ import { Colors } from '../Themes/'
 import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
-const PrimaryNav = StackNavigator({
+const PrimaryNav = createStackNavigator({
   TravContainer: {
     screen: TravContainer,
     navigationOptions: {
@@ -68,11 +67,17 @@ const PrimaryNav = StackNavigator({
   // Default config for all screens
   initialRouteName: 'TravContainer',
   navigationOptions: {
-    headerStyle: styles.header,
+    headerStyle: {
+      backgroundColor: Colors.background,
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   },
   // headerMode: 'float',
   // headerTransitionPreset: 'uikit',
   // headerTransparent: 'true',
 })
 
-export default PrimaryNav
+export default createAppContainer(PrimaryNav)

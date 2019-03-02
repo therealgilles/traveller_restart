@@ -3,6 +3,16 @@ package com.traveller;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import co.apptailor.Worker.BaseReactPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import com.cmcewen.blurview.BlurViewPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import co.apptailor.Worker.BaseReactPackage;
@@ -30,6 +40,16 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNGestureHandlerPackage(),
+            new BaseReactPackage(),
+            new VectorIconsPackage(),
+            new RNSpinkitPackage(),
+            new MapsPackage(),
+            new RNI18nPackage(),
+            new RNDeviceInfo(),
+            new ReactNativeConfigPackage(),
+            new BlurViewPackage(),
+            new RNI18nPackage(),
             new RNSpinkitPackage(),
             new BlurViewPackage(),
             new BaseReactPackage(),
