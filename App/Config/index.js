@@ -1,9 +1,11 @@
-import { Text } from 'react-native'
+import { Text, YellowBox } from 'react-native'
 import DebugConfig from './DebugConfig'
 import AppConfig from './AppConfig'
 
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
+
 // Allow/disallow font-scaling in app
-Text.defaultProps.allowFontScaling = AppConfig.allowTextFontScaling
+Text.allowFontScaling = AppConfig.allowTextFontScaling
 
 if (__DEV__) {
   // If ReactNative's yellow box warnings are too much, it is possible to turn

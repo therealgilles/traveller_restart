@@ -546,7 +546,7 @@ class TravContainer extends React.Component {
               buttonColor={ Colors.redLight }
               btnOutRange={ Colors.redDark }
               degrees={ 0 }
-              icon={<Icon name='search' style={styles.actionButton}></Icon>}
+              renderIcon={active => <Icon name='search' style={styles.actionButton}></Icon>}
               spacing={ 10 }
               outRangeScale={ 1.2 }
               backdrop={ 1 ? false : <BlurView blurType='dark' blurAmount={1} style={styles.container}></BlurView> }
@@ -621,7 +621,7 @@ class TravContainer extends React.Component {
               buttonColor={ Colors.skyBlueLight }
               btnOutRange={ Colors.skyBlueDark }
               degrees={ 0 }
-              icon={<Icon name='clock-o' style={styles.actionButton}></Icon>}
+              renderIcon={action => <Icon name='clock-o' style={styles.actionButton}></Icon>}
               spacing={ 10 }
               outRangeScale={ 1.2 }
               position='center'
@@ -657,7 +657,7 @@ class TravContainer extends React.Component {
             <ActionButton
               key='settings'
               buttonColor={ Colors.skyBlueLight }
-              icon={<Icon name='cog' style={styles.actionButton}></Icon>}
+              renderIcon={active => <Icon name='cog' style={styles.actionButton}></Icon>}
               spacing={ 10 }
               degrees={ 0 }
               position='left'
@@ -674,7 +674,7 @@ class TravContainer extends React.Component {
               key='transport-mode'
               buttonColor={ Colors.skyBlueLight }
               btnOutRange={ Colors.skyBlueDark }
-              icon={ (transportIcon === 'md-walk' || transportIcon === 'md-bicycle') ? <Ionicons name={ transportIcon } style={ styles.actionModeButton } /> : <Icon name={ transportIcon } style={ styles.actionButton } /> }
+              renderIcon={active => (transportIcon === 'md-walk' || transportIcon === 'md-bicycle') ? <Ionicons name={ transportIcon } style={ styles.actionModeButton } /> : <Icon name={ transportIcon } style={ styles.actionButton } /> }
               spacing={ 10 }
               degrees={ 0 }
               position='right'
@@ -707,7 +707,7 @@ class TravContainer extends React.Component {
             <ActionButton
               key='center-map'
               buttonColor={ Colors.whiteLight }
-              icon={<Icon name='crosshairs' style={styles.actionButtonReverse}></Icon>}
+              renderIcon={active => <Icon name='crosshairs' style={styles.actionButtonReverse}></Icon>}
               style={ /* FIXME: style is not supported by ActionButton, could fix */
                       { borderWidth: StyleSheet.hairlineWidth * 2, borderColor: Colors.skyBlueLight } }
               spacing={ 10 }
