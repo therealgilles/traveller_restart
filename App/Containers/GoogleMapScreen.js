@@ -83,7 +83,7 @@ class GoogleMapScreen extends React.Component {
     * Configure what will happen (if anything) when the user
     * presses your callout.
     *************************************************************/
-    console.tron.log(location)
+    if (__DEV__ && console.tron) console.tron.log(location)
   }
 
   renderMapMarkers (location) {

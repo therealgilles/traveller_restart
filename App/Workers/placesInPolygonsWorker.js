@@ -2,7 +2,7 @@ import { self } from 'react-native-workers'
 import turfHelpers from './turf/helpers'
 import turfInside from './turf/inside'
 
-const debug = false // set to true to enable log messages for debug
+const debug = (__DEV__ && console.tron) && false // set to true to enable log messages for debug
 
 let savedPolygonsFeature = []
 
