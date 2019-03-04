@@ -3,9 +3,10 @@ import { encode } from 'base-64'
 import Secrets from 'react-native-config'
 import { Worker } from 'react-native-workers'
 import { isochronsState, polygonsState, savedPolygonsFeature, doneWithSavedPolygonsFeature,
-         ISOCHRON_LOADED, ISOCHRON_ERROR, POLYGONS_LOADED } from './isochron'
+  ISOCHRON_LOADED, ISOCHRON_ERROR, POLYGONS_LOADED } from './isochron'
+import { getGoogleData } from './placesController'
 
-const debug = false // set to true to enable log messages for debug
+const debug = __DEV__ && false // set to true to enable log messages for debug
 
 export const PLACES_NOT_LOADED = 'PLACES_NOT_LOADED'
 export const PLACES_LOADING = 'PLACES_LOADING'
@@ -28,7 +29,7 @@ export const setUpdatePlacesStateFn = updateFn => {
 
 export const loadPlaces = args => {
   if (!savedPolygonsFeature) { return } // do not update places if we don't have a new set of polygons
-  const params = args.params
+  const { params } = args
 
   updatePlacesState && updatePlacesState(PLACES_LOADING)
   const placesInfo = params.placesInfo
@@ -56,7 +57,7 @@ export const loadPlaces = args => {
   .then(messages => {
     updatePlacesState && updatePlacesState(PLACES_INDEXED)
     doneWithSavedPolygonsFeature()
-    messages.map(message => { message.match(/error/i) && console.tron.error(message) })
+    messages.map(message => { message.match(/error/i) && debug && console.tron.error(message) })
   })
   .catch(err => { // we should never get here
     updatePlacesState && updatePlacesState(PLACES_ERROR)
@@ -71,11 +72,13 @@ const getPlaces = params => {
     if (debug) console.tron.display({ name: `getPlaces fetching [${type}], transport mode: ${mode}`, value: position })
     terminatePlacesInPolygonsWorker(type) // terminate worker if running
 
-    api.get(`/places/${type}`, { lat: position.latitude, long: position.longitude, mode, radius, date, size })
+    const { latitude: lat, longitude: long } = position.coords
+
+    getGoogleData({ query: { lat, long, mode, radius, date, size } }, type)
     .then(resp => {
       if (!resp.ok) {
         const err = `Unable to fetch ${type} places from server [${resp.problem}]`
-        console.tron.error(err)
+        if (debug) console.tron.error(err)
         resolve(`ERROR: ${err}`) // use resolve instead of reject to avoid blocking upper promise resolution
         return
       }
@@ -125,14 +128,14 @@ const placesInPolygonsUpdate = type => {
         //console.log(`done -- resolving promise for ${type}`)
         resolve('done')
       } else if (message.id === 'log') {
-        console.tron.display({ name: `PlacesInPolygons worker [${type}]: ${message.name}`, value: message.log })
+        if (debug) console.tron.display({ name: `PlacesInPolygons worker [${type}]: ${message.name}`, value: message.log })
       } else if (message.id === 'error') {
-        console.tron.error(`PlacesInPolygons worker [${type}]: ${message.error}`)
+        if (debug) console.tron.error(`PlacesInPolygons worker [${type}]: ${message.error}`)
         terminatePlacesInPolygonsWorker(type)
         // using resolve instead of reject as we don't want a problem with an error for one type to affect other types
         resolve(`ERROR - PlacesInPolygons worker [${type}]: ${message.error}`)
       } else {
-        console.tron.error(`PlacesInPolygons worker [${type}]: ${messageString}`)
+        if (debug) console.tron.error(`PlacesInPolygons worker [${type}]: ${messageString}`)
         terminatePlacesInPolygonsWorker(type)
         // using resolve instead of reject as we don't want a problem with an error for one type to affect other types
         resolve(`ERROR - PlacesInPolygons worker [${type}]: ${messageString}`)

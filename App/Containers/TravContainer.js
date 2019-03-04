@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ScrollView, View, StyleSheet, Text, Dimensions, Slider, StatusBar, LayoutAnimation,
-         VibrationIOS, Image, TouchableOpacity, Linking } from 'react-native'
+  Vibration, Image, TouchableOpacity, Linking } from 'react-native'
 import MapView from 'react-native-maps'
 import ActionButton from 'react-native-action-button'
 import Spinner from 'react-native-spinkit'
@@ -18,14 +18,14 @@ import ReduxPersist from '../Config/ReduxPersist'
 import styles from './Styles/TravContainerStyle'
 import { Images , Colors } from '../Themes'
 import { updateIsochrons, setUpdateIsochronsStateFn, savedPolygons,
-         terminateIsochronWorker, isochronFillColor, getIsochronDurations,
-         ISOCHRON_NOT_LOADED, ISOCHRON_LOADING, ISOCHRON_LOADED, ISOCHRON_ERROR, ISOCHRON_ABORT } from './isochron'
+  terminateIsochronWorker, isochronFillColor, getIsochronDurations,
+  ISOCHRON_NOT_LOADED, ISOCHRON_LOADING, ISOCHRON_LOADED, ISOCHRON_ERROR, ISOCHRON_ABORT } from './isochron'
 import { loadPlaces, savedPlaces, convertDayHourMinToSeconds, setUpdatePlacesStateFn,
-         PLACES_NOT_LOADED, PLACES_LOADING, PLACES_LOADED, PLACES_INDEXED } from './places'
+  PLACES_NOT_LOADED, PLACES_LOADING, PLACES_LOADED, PLACES_INDEXED } from './places'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import AppIntroSlider from 'react-native-app-intro-slider'
 
-const debug = false // set to true to enable log messages for debug
+const debug = __DEV__ && false // set to true to enable log messages for debug
 
 const COORDINATE_PRECISION = 0.001 // degrees
 const DATETIME_PRECISION = 60 // seconds
@@ -78,11 +78,11 @@ const transportModeInfo = {
 
 const placesInfo = {
   // size: how many places are requested (fewer or equal to 200)
-  'food'    : { enabled: true, visible: false, size: 25, buttonColor: Colors.purpleLight,     buttonTitle: 'Food',    icon: 'cutlery',   image: Images.food    },
-  'health'  : { enabled: true, visible: false, size: 25, buttonColor: Colors.watermelonLight, buttonTitle: 'Medical', icon: 'ambulance', image: Images.medical },
-  'museums' : { enabled: true, visible: false, size: 25, buttonColor: Colors.yellowLight,     buttonTitle: 'Museums', icon: 'bank',      image: Images.museums },
-  'park'    : { enabled: true, visible: false, size: 25, buttonColor: Colors.greenLight,      buttonTitle: 'Parks',   icon: 'tree',      image: Images.park    },
-  'transit' : { enabled: true, visible: false, size: 25, buttonColor: Colors.orangeLight,     buttonTitle: 'Transit', icon: 'bus',       image: Images.transit },
+  'restaurant' : { enabled: true, visible: false, size: 25, buttonColor: Colors.purpleLight,     buttonTitle: 'Food',    icon: 'cutlery',   image: Images.food    },
+  'hospital'   : { enabled: true, visible: false, size: 25, buttonColor: Colors.watermelonLight, buttonTitle: 'Medical', icon: 'ambulance', image: Images.medical },
+  'museum'     : { enabled: true, visible: false, size: 25, buttonColor: Colors.yellowLight,     buttonTitle: 'Museums', icon: 'bank',      image: Images.museums },
+  'park'       : { enabled: true, visible: false, size: 25, buttonColor: Colors.greenLight,      buttonTitle: 'Parks',   icon: 'tree',      image: Images.park    },
+  'bus_station': { enabled: true, visible: false, size: 25, buttonColor: Colors.orangeLight,     buttonTitle: 'Transit', icon: 'bus',       image: Images.transit },
 }
 
 const getPosition = l => {
@@ -111,9 +111,10 @@ const slides = [
 ]
 
 class TravContainer extends React.Component {
-  constructor (props: Object) {
+  constructor (props) {
     super(props)
     const durations = getIsochronDurations(props.duration)
+
     this.state = {
       initialPosition: 'unknown',
       lastPosition: 'unknown',
@@ -266,6 +267,7 @@ class TravContainer extends React.Component {
       radius: transportModeInfo[transportMode].radius,
       date: roundDateTime(this.state.dateTime),
     }
+    if (debug) console.tron.display({ name: 'updatePlaces', value: { params, state: this.state } })
     loadPlaces({ params })
   }
 
@@ -304,12 +306,11 @@ class TravContainer extends React.Component {
     //console.log('calloutPress', location)
     if (debug) console.tron.display({ name: 'calloutPress location', value: location })
     if (location.url) {
-      if (location.url.match(/apple/) && event) { return }
       const testUrl = location.url.replace(/^(comgooglemaps:\/\/).*/, '$1')
       //console.log('testUrl', testUrl)
       Linking.canOpenURL(testUrl).then(supported => {
         if (!supported) {
-          if (debug) console.tron.display('Cannot handle url: ' + location.url)
+          if (debug) console.tron.log('Cannot handle url: ' + testUrl)
         } else {
           return Linking.openURL(location.url)
         }
@@ -374,6 +375,7 @@ class TravContainer extends React.Component {
           newRegion.longitude = e.nativeEvent.coordinate.longitude
           this.refs.map.animateToRegion(newRegion, 500)
         }}
+        style={{ zIndex: !type ? 1 : 0 }}
       >
         <MapCallout location={location} onPress={this.calloutPress}/>
       </MapView.Marker>
@@ -432,7 +434,7 @@ class TravContainer extends React.Component {
     let newPosition = { coords: coordinate }
     // animate to region, position update, isochrones reload, update date to now
     this.updateLocationIsochrons(true, newPosition, true, true)
-    VibrationIOS.vibrate()
+    Vibration.vibrate()
   }
 
   _renderSlide = props => (

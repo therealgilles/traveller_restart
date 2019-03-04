@@ -1,7 +1,7 @@
 import { Worker } from 'react-native-workers'
 import Color from 'color'
 
-const debug = false // set to true to enable log messages for debug
+const debug = __DEV__ && false // set to true to enable log messages for debug
 
 export const ISOCHRON_NOT_LOADED = 'ISOCHRON_NOT_LOADED'
 export const ISOCHRON_LOADING = 'ISOCHRON_LOADING'
@@ -30,6 +30,7 @@ const initPolygon = () => {
   savedPolygonsFeature = []
   polygonsState = POLYGONS_NOT_LOADED
 }
+
 const savePolygon = (index, data, length) => {
   polygonsState = POLYGONS_LOADING
   savedPolygons[index] = data // update saved isochrons
@@ -59,6 +60,7 @@ const savePolygon = (index, data, length) => {
     polygonsState = POLYGONS_LOADED
   }
 }
+
 export const doneWithSavedPolygonsFeature = () => {
   //console.log('doneWithSavedPolygonsFeature')
   // set to null to enable garbage collection and reduce memory footprint
@@ -68,6 +70,7 @@ export const doneWithSavedPolygonsFeature = () => {
 export const setUpdateIsochronsStateFn = updateFn => {
   updateIsochronsState = updateFn
 }
+
 export const terminateIsochronWorker = () => {
   if (worker) {
     if (debug) console.tron.display({ name: 'terminateIsochronWorker', value: 'terminating isochron worker' })
@@ -79,7 +82,7 @@ export const terminateIsochronWorker = () => {
 const checkIsochrons = () => {
   if (isochronsState === ISOCHRON_LOADING) {
     terminateIsochronWorker()
-    console.tron.error('Loading isochron aborted')
+    if (debug) console.tron.error('Loading isochron aborted')
     isochronsState = ISOCHRON_ABORT
     updateIsochronsState && updateIsochronsState(isochronsState)
     isochronSetTimeout && clearTimeout(isochronSetTimeout)
@@ -92,8 +95,7 @@ export const updateIsochrons = args => {
   const argString = JSON.stringify(params)
 
   if (params.skip) {
-    // pretend isochrons are loaded
-    isochronsState = ISOCHRON_LOADED
+    isochronsState = ISOCHRON_LOADED // pretend isochrons are loaded
     updateIsochronsState && updateIsochronsState(isochronsState)
     return
   }
@@ -103,8 +105,7 @@ export const updateIsochrons = args => {
     updateIsochronsState && updateIsochronsState(isochronsState)
     return
   }
-  // save arguments string
-  savedArgString = argString
+  savedArgString = argString // save arguments string
 
   isochronsState = ISOCHRON_NOT_LOADED
   updateIsochronsState && updateIsochronsState(isochronsState)
@@ -131,14 +132,14 @@ export const updateIsochrons = args => {
       isochronSetTimeout = null
       terminateIsochronWorker()
     } else if (message.id === 'log') {
-      console.tron.display({ name: 'Isochron worker ' + message.name, value: message.log })
+      if (debug) console.tron.display({ name: 'Isochron worker ' + message.name, value: message.log })
     } else if (message.id === 'error') {
-      console.tron.error('Isochron worker reported an error: ' + message.error)
+      if (debug) console.tron.error('Isochron worker reported an error: ' + message.error)
       isochronsState = ISOCHRON_ERROR
       updateIsochronsState && updateIsochronsState(isochronsState)
       terminateIsochronWorker()
     } else {
-      console.tron.error('Isochron worker unknown message: ' + messageString)
+      if (debug) console.tron.error('Isochron worker unknown message: ' + messageString)
       isochronsState = ISOCHRON_ERROR
       updateIsochronsState && updateIsochronsState(isochronsState)
       terminateIsochronWorker()
@@ -187,7 +188,7 @@ export const isochronFillColor = (ratio, opacityFactor, buttonMode) => {
   //let { r, g, b } = makeColorGradient(ratio * 3.14)
   let a = buttonMode ? 1.0 : 0.2 * opacityFactor * (brightness(r, g, b) / 255)
   if (buttonMode) {
-    ({ r, g, b } = Color({ r, g, b }).rotate(-10).saturate(0.5).darken(0.2).rgb())
+    ({ r, g, b } = Color({ r, g, b }).rotate(-10).saturate(0.5).darken(0.2).rgb().object())
   }
   return `rgba(${r}, ${g}, ${b}, ${a})`
 }
@@ -213,7 +214,10 @@ let checkWorker = null
 
 export const terminateCheckIsochronAPIWorker = () => {
   if (checkWorker) {
-    if (debug) console.tron.display({ name: 'terminateCheckIsochronAPIWorker', value: 'terminating checkIsochronAPI worker' })
+    if (debug) console.tron.display({
+      name: 'terminateCheckIsochronAPIWorker',
+      value: 'terminating checkIsochronAPI worker'
+    })
     checkWorker.terminate() // terminate worker if it was running
     checkWorker = null
   }
@@ -238,13 +242,13 @@ export const checkIsochronAPI = args => {
       } else if (message.id === 'done') {
         terminateCheckIsochronAPIWorker()
       } else if (message.id === 'log') {
-        console.tron.display({ name: 'checkIsochronAPI worker ' + message.name, value: message.log })
+        if (debug) console.tron.display({ name: 'checkIsochronAPI worker ' + message.name, value: message.log })
       } else if (message.id === 'error') {
-        console.tron.error('checkIsochronAPI worker reported an error: ' + message.error)
+        if (debug) console.tron.error('checkIsochronAPI worker reported an error: ' + message.error)
         terminateCheckIsochronAPIWorker()
         reject({ error: message.error })
       } else {
-        console.tron.error('checkIsochronAPI worker unknown message: ' + messageString)
+        if (debug) console.tron.error('checkIsochronAPI worker unknown message: ' + messageString)
         terminateCheckIsochronAPIWorker()
         reject({ error: messageString })
       }
