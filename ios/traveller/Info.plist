@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.traveller</string>
+			<string>net.lepetitbalcon.traveller</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>comtraveller</string>
+				<string>netlepetitbalcontraveller</string>
 			</array>
 		</dict>
 	</array>
@@ -39,7 +39,7 @@
 	<array>
 		<string>comgooglemaps</string>
 		<string>comgooglemaps-x-callback</string>
-		<string>comtraveller</string>
+		<string>netpetitbalcontraveller</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
