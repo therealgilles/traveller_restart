@@ -45,7 +45,6 @@ This project uses [react-native-config](https://github.com/luggit/react-native-c
 and other sensitive information in a `.env` file:
 
 ```
-API_URL=https://myapi.com
 GOOGLE_MAPS_API_KEY=abcdefgh
 ```
 
@@ -54,7 +53,6 @@ and access them from React Native like so:
 ```
 import Secrets from 'react-native-config'
 
-Secrets.API_URL  // 'https://myapi.com'
 Secrets.GOOGLE_MAPS_API_KEY  // 'abcdefgh'
 ```
 
