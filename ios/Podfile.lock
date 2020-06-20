@@ -84,7 +84,7 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNGestureHandler (1.0.17):
+  - RNGestureHandler (1.6.1):
     - React
   - RNI18n (2.0.15):
     - React
@@ -117,7 +117,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps
@@ -155,10 +155,10 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-google-maps: 544d2208b09a7e2ec2c6112c8a97c4e7f921f74d
   react-native-maps: 9469741f77f270c605cafec603ce47327dc5b5f8
-  RNGestureHandler: c33871a91c10f7b4df79d1829fc8fe0d8ada0df0
+  RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNI18n: e2f7e76389fcc6e84f2c8733ea89b92502351fd8
   yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
 
-PODFILE CHECKSUM: ca8e8f2a3609fd6bd9bbf2976c16fe4c9f3e2d57
+PODFILE CHECKSUM: f90a214f7f40c4cdfaaa32db85c8697c4ef4f376
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.9.3

@@ -3,9 +3,9 @@ package com.traveller;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import co.apptailor.Worker.BaseReactPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
@@ -40,9 +40,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VectorIconsPackage(),
             new RNGestureHandlerPackage(),
             new BaseReactPackage(),
-            new VectorIconsPackage(),
             new RNSpinkitPackage(),
             new MapsPackage(),
             new RNI18nPackage(),
