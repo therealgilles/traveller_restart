@@ -24,6 +24,8 @@ import { loadPlaces, savedPlaces, convertDayHourMinToSeconds, setUpdatePlacesSta
   PLACES_NOT_LOADED, PLACES_LOADING, PLACES_LOADED, PLACES_INDEXED } from './places'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import AppIntroSlider from 'react-native-app-intro-slider'
+import Geolocation from '@react-native-community/geolocation'
+import diff from 'deep-diff'
 
 const debug = __DEV__ && false // set to true to enable log messages for debug
 
@@ -62,7 +64,7 @@ let savedFromTo = null
 let onRegionChangeCompleteCounter = 0
 let refreshMomentInterval = null
 let isochronsNeedToLoad = true
-let delayTutorial = true
+let delayTutorial = false // DEPRECATED
 
 // temporary position until we get the current location
 let currentPosition = { latitude: 37.7825177, longitude: -122.4106772 }
@@ -88,6 +90,9 @@ const placesInfo = {
 const getPosition = l => {
   return { coords: { latitude: roundCoordinate(l.latitude), longitude: roundCoordinate(l.longitude) } }
 }
+
+Geolocation.setRNConfiguration({})
+Geolocation.requestAuthorization()
 
 let skipIsochrons = false // set to true to disable loading isochrons [for debug]
 
@@ -149,6 +154,12 @@ class TravContainer extends React.Component {
     setUpdatePlacesStateFn(this.updatePlacesState.bind(this))
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log(diff(this.props, nextProps))
+  //   console.log(diff(this.state, nextState))
+  //   return true
+  // }
+
   componentDidUpdate() {
     //console.log('componentDidUpdate')
     if (!ReduxPersist.active) { return }
@@ -193,7 +204,7 @@ class TravContainer extends React.Component {
     }
 
     return new Promise((resolve, reject) => {
-      newPosition ? resolve(newPosition) : navigator.geolocation.getCurrentPosition(position => resolve(position))
+      newPosition ? resolve(newPosition) : Geolocation.getCurrentPosition(position => resolve(position))
     })
     .then(position => {
       // update global var
@@ -437,12 +448,12 @@ class TravContainer extends React.Component {
     Vibration.vibrate()
   }
 
-  _renderSlide = props => (
-    <View style={[styles.slide,{ backgroundColor: props.backgroundColor, width: props.width }]}>
-      <View><Image source={ props.image }/></View>
-      <View level={10}><Text style={styles.textTitle}>{props.title}</Text></View>
-      <View level={15}><Text style={styles.text}>{props.text}</Text></View>
-      <View level={8}><Text style={styles.text}>{props.subtext}</Text></View>
+  _renderSlide = ({ item }) => (
+    <View style={[styles.slide,{ backgroundColor: item.backgroundColor, width: item.width }]}>
+      <View><Image source={ item.image }/></View>
+      <View level={10}><Text style={styles.textTitle}>{item.title}</Text></View>
+      <View level={15}><Text style={styles.text}>{item.text}</Text></View>
+      <View level={8}><Text style={styles.text}>{item.subtext}</Text></View>
     </View>
   )
 
@@ -451,7 +462,6 @@ class TravContainer extends React.Component {
   )
 
   render () {
-    //console.log('render in')
     if (!ReduxPersist.active) { return null }
     delayTutorial && setTimeout( () => { delayTutorial = false }, 150) // FIXME: hack
     //console.log('render in')
@@ -468,7 +478,7 @@ class TravContainer extends React.Component {
     //console.log('render', tutorialHasRun)
 
     return (
-      <View style={styles.container}>
+      <View style={styles.travContainer}>
 
         <StatusBar networkActivityIndicatorVisible={this.state.networkActivityIndicatorVisible} />
         <MapView
@@ -508,7 +518,7 @@ class TravContainer extends React.Component {
                     coordinates={ p.polygon }
                     holes={ p.holes }
                     fillColor={ isochronFillColor((arrayIndex + 1) / (savedPolygons.length + 1), this.state.polygonsFillColor[arrayIndex]) }
-                    strokeWidth={ 0.4 * (1 + (this.state.polygonsFillColor[arrayIndex] - 1) * 3) }
+                    strokeWidth={ 0.8 * (1 + (this.state.polygonsFillColor[arrayIndex] - 1) * 0.8) }
                     strokeColor={ 'rgba(85, 85, 85, 0.5)' }
                     key={ arrayIndex * 1000 + index }
                   />
@@ -790,7 +800,7 @@ class TravContainer extends React.Component {
         {/* First Launch Tutorial */}
         { (delayTutorial ? false : !tutorialHasRun) && (
             <AppIntroSlider
-              slides={slides}
+              data={slides}
               renderItem={this._renderSlide}
               showPrevButton
               onDone={toggleTutorialHasRun}

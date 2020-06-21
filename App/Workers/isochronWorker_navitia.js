@@ -1,6 +1,6 @@
 import { create } from 'apisauce'
 import { encode } from 'base-64'
-import { self } from 'react-native-workers'
+import { self } from 'react-native-threads'
 import Secrets from 'react-native-config'
 import { drawIsochron } from './drawIsochron'
 

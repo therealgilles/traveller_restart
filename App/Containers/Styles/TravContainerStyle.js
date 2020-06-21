@@ -3,7 +3,7 @@
 import { StyleSheet, Dimensions } from 'react-native'
 import { Colors, Metrics, ApplicationStyles } from '../../Themes/'
 
-const { width, height } = Dimensions.get('window');
+// const { width, height } = Dimensions.get('window')
 
 export default StyleSheet.create({
   travContainer: {
@@ -61,6 +61,11 @@ export default StyleSheet.create({
   spinnerText: {
     color: 'rgba(237, 241, 242, 0.9)',
     fontWeight: '700',
+  },
+  slideContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'blue',
   },
   slide: {
     flex: 1,

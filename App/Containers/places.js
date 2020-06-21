@@ -1,7 +1,7 @@
 import { create } from 'apisauce'
 import { encode } from 'base-64'
 import Secrets from 'react-native-config'
-import { Worker } from 'react-native-workers'
+import { Thread } from 'react-native-threads'
 import { isochronsState, polygonsState, savedPolygonsFeature, doneWithSavedPolygonsFeature,
   ISOCHRON_LOADED, ISOCHRON_ERROR, POLYGONS_LOADED } from './isochron'
 import { getGoogleData } from './placesController'
@@ -115,7 +115,7 @@ const placesInPolygonsUpdate = type => {
     if (!savedPlaces[type]) { resolve(`ERROR - no ${type} places`); return } // no places for this type
 
     terminatePlacesInPolygonsWorker(type)
-    workers[type] = new Worker('App/Workers/placesInPolygonsWorker.js')
+    workers[type] = new Thread('App/Workers/placesInPolygonsWorker.js')
 
     workers[type].onmessage = messageString => {
       const message = JSON.parse(messageString)

@@ -51,7 +51,7 @@ class GoogleMapScreen extends React.Component {
     this.onRegionChange = this.onRegionChange.bind(this)
   }
 
-  componentWillReceiveProps (newProps) {
+  // UNSAFE_componentWillReceiveProps (newProps) {
     /* ***********************************************************
     * STEP 3
     * If you wish to recenter the map on new locations any time the
@@ -60,7 +60,7 @@ class GoogleMapScreen extends React.Component {
     // this.setState({
     //   region: calculateRegion(newProps.locations, { latPadding: 0.1, longPadding: 0.1 })
     // })
-  }
+  // }
 
   onRegionChange (newRegion) {
     /* ***********************************************************

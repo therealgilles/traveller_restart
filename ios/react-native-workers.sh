@@ -10,19 +10,21 @@
 # This script is supposed to be invoked as part of Xcode build process
 # and relies on environment variables (including PWD) set by Xcode
 
+echo "BEGIN react-native-workers.sh"
+
 case "$CONFIGURATION" in
   Debug)
     # Speed up build times by skipping the creation of the offline package for debug
     # builds on the simulator since the packager is supposed to be running anyways.
     if [[ "$PLATFORM_NAME" == *simulator ]]; then
-      echo "Skipping bundling for Simulator platform"
+      echo "... Skipping bundling for Simulator platform"
       exit 0;
     fi
 
     DEV=true
     ;;
   "")
-    echo "$0 must be invoked by Xcode"
+    echo "... $0 must be invoked by Xcode"
     exit 1
     ;;
   *)
@@ -77,6 +79,7 @@ do
   ENTRY_FILE_BASENAME=$(basename $ENTRY_FILE | cut -d. -f1)
   BUNDLE_FILE="$DEST/$ENTRY_FILE_BASENAME.jsbundle"
 
+  echo "... processing $ENTRY_FILE to create $BUNDLE_FILE"
   $NODE_BINARY "$REACT_NATIVE_DIR/local-cli/cli.js" bundle \
     --entry-file "$ENTRY_FILE" \
     --platform ios \
@@ -92,3 +95,5 @@ do
   fi
 
 done
+
+echo "END react-native-workers.sh"
