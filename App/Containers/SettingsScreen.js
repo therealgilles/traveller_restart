@@ -62,15 +62,19 @@ class SettingsScreen extends React.Component {
                   title={ 'Travel time ' + travelTimeName }
                 />
                 <SettingsList.Header headerStyle={{marginTop:50}}/>
-                <SettingsList.Item hasNavArrow={ false }
+                <SettingsList.Item
+                  hasNavArrow={false}
                   title='Run Tutorial'
-                  titleStyle={ { color: Colors.skyBlueLight} }
+                  titleStyle={{color:Colors.skyBlueLight, fontSize: 16, fontWeight: 'bold'}}
                   onPress={ () => {
                      toggleTutorialHasRun()
                      alert('Tutorial will run when you leave settings')
                    } }
                 />
-                <SettingsList.Item title='About' onPress={ () => this.props.navigation.navigate('DeviceInfo') } />
+                <SettingsList.Item
+                  title='Device Info'
+                  onPress={ () => this.props.navigation.navigate('DeviceInfo') }
+                />
               </SettingsList>
             </View>
           </View>

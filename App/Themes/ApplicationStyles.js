@@ -11,6 +11,7 @@ const ApplicationStyles = {
       flex: 1,
       // marginTop: Metrics.navBarHeight,
       backgroundColor: Colors.transparent,
+      shadowOpacity: 0,
     },
     backgroundImage: {
       position: 'absolute',

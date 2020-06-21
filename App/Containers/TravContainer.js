@@ -431,7 +431,7 @@ class TravContainer extends React.Component {
     }
 
     //if (debug) console.tron.display({ name: 'polygonsFillColor', value: polygonsFillColor })
-    this.setState({ polygonsFillColor: polygonsFillColor })
+    this.setState({ polygonsFillColor })
   }
 
   changePlacesInfo (type) {
@@ -643,7 +643,9 @@ class TravContainer extends React.Component {
               backdrop={ 1 ? false : <BlurView blurType='dark' blurAmount={1} style={styles.container}></BlurView> }
             >
               { this.state.durations.map((duration, index) => {
-                  let buttonEnabled = index === 0 ? false : (this.state.polygonsFillColor[index - 1] === 1 ? false : true)
+                  let buttonEnabled = (index === 0) ? false : (this.state.polygonsFillColor[index - 1] === 1 ? false : true)
+                  console.log('button color', index, isochronFillColor(index / this.state.durations.length, null, true))
+                  console.log('button border', buttonEnabled ? { borderWidth: StyleSheet.hairlineWidth * 4, borderColor: Colors.whiteLight } : undefined)
                   return (
                     <ActionButton.Item
                       size={ 44 }

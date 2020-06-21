@@ -18,6 +18,7 @@ const PrimaryNav = createStackNavigator({
     TravContainer: {
         screen: TravContainer,
         navigationOptions: {
+            title: 'Map',
             headerShown: false,
         },
     },

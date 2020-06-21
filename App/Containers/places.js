@@ -76,6 +76,11 @@ const getPlaces = params => {
 
     getGoogleData({ query: { lat, long, mode, radius, date, size } }, type)
     .then(resp => {
+      if (!resp)  {
+        resolve(`ERROR: Problem while calling getGoogleData`) // use resolve instead of reject to avoid blocking upper promise resolution
+        return
+      }
+
       if (!resp.ok) {
         const err = `Unable to fetch ${type} places from server [${resp.problem}]`
         if (debug) console.tron.error(err)
