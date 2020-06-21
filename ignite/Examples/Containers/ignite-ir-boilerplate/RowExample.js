@@ -68,7 +68,7 @@ class RowExample extends Component {
   * state's datasource on newProps.
   *
   * e.g.
-    componentWillReceiveProps (newProps) {
+    UNSAFE_componentWillReceiveProps (newProps) {
       if (newProps.someData) {
         this.setState(prevState => ({
           dataSource: prevState.dataSource.cloneWithRows(newProps.someData)

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, StatusBar } from 'react-native'
 import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
+import {SafeAreaProvider} from 'react-native-safe-area-context'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 
@@ -18,10 +19,12 @@ class RootContainer extends Component {
 
   render () {
     return (
-      <View style={styles.applicationView}>
-        <StatusBar barStyle='light-content' />
-        <ReduxNavigation />
-      </View>
+      <SafeAreaProvider>
+        <View style={styles.applicationView}>
+          <StatusBar barStyle='light-content' />
+          <ReduxNavigation />
+        </View>
+      </SafeAreaProvider>
     )
   }
 }

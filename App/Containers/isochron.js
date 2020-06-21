@@ -1,4 +1,4 @@
-import { Worker } from 'react-native-workers'
+import { Thread } from 'react-native-threads'
 import Color from 'color'
 
 const debug = __DEV__ && false // set to true to enable log messages for debug
@@ -118,7 +118,7 @@ export const updateIsochrons = args => {
   updateIsochronsState && updateIsochronsState(isochronsState)
   isochronSetTimeout = setTimeout(() => checkIsochrons(), isochronTimeout)
   // create worker and send it some work
-  worker = new Worker(`App/Workers/isochronWorker_${params.provider}.js`)
+  worker = new Thread(`App/Workers/isochronWorker_${params.provider}.js`)
 
   worker.onmessage = messageString => {
     const message = JSON.parse(messageString)
@@ -186,7 +186,7 @@ export const isochronFillColor = (ratio, opacityFactor, buttonMode) => {
     g = Math.ceil(255 * (1 - ratio) * 2)
   }
   //let { r, g, b } = makeColorGradient(ratio * 3.14)
-  let a = buttonMode ? 1.0 : 0.2 * opacityFactor * (brightness(r, g, b) / 255)
+  let a = buttonMode ? 1.0 : (0.2 * opacityFactor * (brightness(r, g, b) / 255)).toFixed(2)
   if (buttonMode) {
     ({ r, g, b } = Color({ r, g, b }).rotate(-10).saturate(0.5).darken(0.2).rgb().object())
   }

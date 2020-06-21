@@ -4,6 +4,12 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import RootContainer from './RootContainer'
 import createStore from '../Redux'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
+// load fonts
+FontAwesome.loadFont()
+Ionicons.loadFont()
 
 // create our store
 const store = createStore()

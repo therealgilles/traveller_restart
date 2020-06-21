@@ -1,4 +1,4 @@
-import { self } from 'react-native-workers'
+import { self } from 'react-native-threads'
 import turfHelpers from './turf/helpers'
 import turfInside from './turf/inside'
 

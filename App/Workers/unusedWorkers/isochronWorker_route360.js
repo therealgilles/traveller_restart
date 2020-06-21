@@ -1,6 +1,6 @@
 import { create } from 'apisauce'
 import { encode } from 'base-64'
-import { self } from 'react-native-workers'
+import { self } from 'react-native-threads'
 import Secrets from 'react-native-config'
 import { drawIsochron } from './drawIsochron'
 import r360 from './route360/r360-core-src'
@@ -11,7 +11,7 @@ const useBoundaryDuration = true  // if true, will fetch all isochrons at once, 
 
 const provider = 'ROUTE360'
 const key = process.env.ROUTE360_KEY || Secrets.ROUTE360_KEY
-const directUrl = 'https://service.route360.net'
+const directUrl = 'https://service.targomo.com'
 
 // get message from application
 self.onmessage = messageString => {
