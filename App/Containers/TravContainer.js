@@ -760,7 +760,7 @@ class TravContainer extends React.Component {
         } }
         query={ {
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyDZaeZPN4R3f82-Gxg7SE6BLxYcmHjvdGM',
+          key: '<API_KEY>',
           language: 'en', // language of the results
           types: '(cities)', // default: 'geocode'
         } }
