@@ -539,6 +539,7 @@ class TravContainer extends React.Component {
           { this.state.locations.map((location, index) => this.renderMapMarkers.call(this, location, index, undefined, placesKeyTag)) }
         </MapView>
 
+        {/* Slider -- NOT USED */}
         { this.state.sliderVisible && (
             <Slider
               minimumValue={ 0 }
@@ -557,7 +558,9 @@ class TravContainer extends React.Component {
               key='search'
               buttonColor={ Colors.redLight }
               btnOutRange={ Colors.redDark }
+              shadowStyle={{backgroundColor: 'white'}}
               degrees={ 0 }
+              offsetY={ 40 }
               renderIcon={active => <Icon name='search' style={styles.actionButton}></Icon>}
               spacing={ 10 }
               outRangeScale={ 1.2 }
@@ -591,10 +594,14 @@ class TravContainer extends React.Component {
                   if (type === 'refresh') {
                     //console.log('refresh', refreshEnabled)
                     // animate to region, no position change, isochrones reload, update date to now
+                    let btnColors = '26, 188, 156'
+                    let buttonColor = `rgba(${btnColors}, ${ refreshEnabled ? 1 : 0.4 })`
                     return (
                       <ActionButton.Item
                         key={ `search-refresh-${refreshEnabled}-${refreshMoment}` }
-                        buttonColor={ `rgba(26, 188, 156, ${ refreshEnabled ? 1 : 0.4 })` }
+                        buttonColor={ buttonColor }
+                        shadowStyle={{backgroundColor: `rgb(${btnColors})`}}
+                        hideShadow={!refreshEnabled}
                         title={ `refreshed ${refreshMoment}` }
                         titleColor={ refreshEnabled ? '#444' : '#888' }
                         size={ 44 }
@@ -613,6 +620,7 @@ class TravContainer extends React.Component {
                       <ActionButton.Item
                         key={`search-${type}`}
                         buttonColor={ placesInfo[type].buttonColor }
+                        shadowStyle={{backgroundColor: placesInfo[type].buttonColor}}
                         title={ placesInfo[type].buttonTitle }
                         size={ 44 }
                         onPress={ () => this.changePlacesInfo.call(this, type) }
@@ -632,23 +640,28 @@ class TravContainer extends React.Component {
             <ActionButton
               buttonColor={ Colors.skyBlueLight }
               btnOutRange={ Colors.skyBlueDark }
+              shadowStyle={{backgroundColor: 'white'}}
               degrees={ 0 }
               renderIcon={action => <Icon name='clock-o' style={styles.actionButton}></Icon>}
               spacing={ 10 }
               outRangeScale={ 1.2 }
               position='center'
+              offsetY={ 40 }
               verticalOrientation='down'
               key='duration'
               autoInactive={ false }
               backdrop={ 1 ? false : <BlurView blurType='dark' blurAmount={1} style={styles.container}></BlurView> }
             >
               { this.state.durations.map((duration, index) => {
-                  let buttonEnabled = (index === 0) ? false : (this.state.polygonsFillColor[index - 1] === 1 ? false : true)
+                  let indexSelected = this.state.polygonsFillColor[index - 1] === 2
+                  let buttonEnabled = (index === 0) ? false : indexSelected
+                  let buttonColor = (index === 0) ? Colors.skyBlueLight : isochronFillColor(index / this.state.durations.length, null, true)
                   return (
                     <ActionButton.Item
                       size={ 44 }
-                      buttonColor={ index === 0 ? Colors.skyBlueLight : isochronFillColor(index / this.state.durations.length, null, true) }
+                      buttonColor={ buttonColor }
                       btnOutRange={ Colors.skyBlueDark }
+                      shadowStyle={{backgroundColor: buttonColor}}
                       onPress={ () => this.polygonsFillColorUpdate.call(this, index) }
                       key={ `duration-${index}` }
                       style={ buttonEnabled ? { borderWidth: StyleSheet.hairlineWidth * 4, borderColor: Colors.whiteLight } : undefined }
@@ -669,10 +682,12 @@ class TravContainer extends React.Component {
             <ActionButton
               key='settings'
               buttonColor={ Colors.skyBlueLight }
+              shadowStyle={{backgroundColor: 'white'}}
               renderIcon={active => <Icon name='cog' style={styles.actionButton}></Icon>}
               spacing={ 10 }
               degrees={ 0 }
               position='left'
+              offsetY={ 40 }
               verticalOrientation='down'
               onPress={() => this.props.navigation.navigate('Settings')}
             >
@@ -686,28 +701,35 @@ class TravContainer extends React.Component {
               key='transport-mode'
               buttonColor={ Colors.skyBlueLight }
               btnOutRange={ Colors.skyBlueDark }
+              shadowStyle={{backgroundColor: 'white'}}
               renderIcon={active => (transportIcon === 'md-walk' || transportIcon === 'md-bicycle') ? <Ionicons name={ transportIcon } style={ styles.actionModeButton } /> : <Icon name={ transportIcon } style={ styles.actionButton } /> }
               spacing={ 10 }
               degrees={ 0 }
               position='right'
+              offsetY={40}
               verticalOrientation='down'
               autoInactive={ true }
               outRangeScale={ 1.2 }
             >
-              { Object.keys(transportModeInfo).map(transportMode =>
-                  <ActionButton.Item
-                    key={`transport-mode-${transportMode}`}
-                    buttonColor={ Colors.skyBlueLight }
-                    size={ 44 }
-                    onPress={ () => {
-                      setTransportMode(transportMode)
-                      /* no animate to region, no position change, isochrones reload, update date to now */
-                      this.updateLocationIsochrons(false, 'current', true, true)
-                    } }
-                  >
-                    { (transportModeInfo[transportMode].icon === 'md-walk' || transportModeInfo[transportMode].icon === 'md-bicycle') ? <Ionicons name={ transportModeInfo[transportMode].icon } style={ styles.actionModeButton } /> : <Icon name={ transportModeInfo[transportMode].icon } style={ styles.actionButton } /> }
-                    {/* <Ionicons name={ transportModeInfo[transportMode].icon } style={styles.actionModeButton}/> */}
-                  </ActionButton.Item>
+              { Object.keys(transportModeInfo).map(tm => {
+                  let buttonEnabled = tm === transportMode
+                  return (
+                    <ActionButton.Item
+                      key={`transport-mode-${tm}`}
+                      buttonColor={ Colors.skyBlueLight }
+                      shadowStyle={{backgroundColor: Colors.skyBlueLight}}
+                      size={ 44 }
+                      onPress={ () => {
+                        setTransportMode(tm)
+                        /* no animate to region, no position change, isochrones reload, update date to now */
+                        this.updateLocationIsochrons(false, 'current', true, true)
+                      } }
+                      style={ buttonEnabled ? { borderWidth: StyleSheet.hairlineWidth * 4, borderColor: Colors.whiteLight } : undefined }
+                    >
+                      { (transportModeInfo[tm].icon === 'md-walk' || transportModeInfo[tm].icon === 'md-bicycle') ? <Ionicons name={ transportModeInfo[tm].icon } style={ styles.actionModeButton } /> : <Icon name={ transportModeInfo[tm].icon } style={ styles.actionButton } /> }
+                      {/* <Ionicons name={ transportModeInfo[tm].icon } style={styles.actionModeButton}/> */}
+                    </ActionButton.Item>
+                  )}
                 )
               }
             </ActionButton>
@@ -719,13 +741,14 @@ class TravContainer extends React.Component {
             <ActionButton
               key='center-map'
               buttonColor={ Colors.whiteLight }
-              renderIcon={active => <Icon name='crosshairs' style={styles.actionButtonReverse}></Icon>}
               style={ /* FIXME: style is not supported by ActionButton, could fix */
-                      { borderWidth: StyleSheet.hairlineWidth * 2, borderColor: Colors.skyBlueLight } }
+                      { borderWidth: StyleSheet.hairlineWidth * 2, borderColor: Colors.skyBlueLight, borderRadius: 50 } }
+              shadowStyle={{backgroundColor: 'white'}}
+              renderIcon={active => <Icon name='crosshairs' style={styles.actionButtonReverse}></Icon>}
               spacing={ 10 }
               position='center'
-              offsetY={ 45 }
-              size={ 35 }
+              offsetY={ 48 }
+              size={ 36 }
               verticalOrientation='up'
               onPress={ () => { // center map on GPS location
                 this.updateLocationIsochrons(true, undefined, false, false)

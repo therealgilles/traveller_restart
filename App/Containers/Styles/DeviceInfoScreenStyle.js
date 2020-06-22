@@ -17,12 +17,12 @@ export default StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 2,
-    shadowColor: Colors.panther,
-    shadowOffset: {
-      height: 7,
-      width: 7
-    },
-    shadowRadius: 2,
+    // shadowColor: Colors.panther,
+    // shadowOffset: {
+    //   height: 7,
+    //   width: 7
+    // },
+    // shadowRadius: 2,
     paddingBottom: Metrics.baseMargin,
     margin: Metrics.baseMargin
   },

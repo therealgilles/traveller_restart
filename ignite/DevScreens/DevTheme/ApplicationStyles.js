@@ -9,8 +9,7 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
-      backgroundColor: Colors.transparent,
-      shadowOpacity: 0,
+      // backgroundColor: Colors.transparent,
     },
     backgroundImage: {
       position: 'absolute',
@@ -22,8 +21,7 @@ const ApplicationStyles = {
     container: {
       flex: 1,
       paddingTop: Metrics.baseMargin,
-      backgroundColor: Colors.transparent,
-      shadowOpacity: 0,
+      // backgroundColor: Colors.transparent,
     },
     section: {
       margin: Metrics.section,

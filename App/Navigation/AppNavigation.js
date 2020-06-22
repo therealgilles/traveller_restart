@@ -11,7 +11,7 @@ import MeasurementScreen from '../Containers/MeasurementScreen'
 import TransportModeScreen from '../Containers/TransportModeScreen'
 import { Colors } from '../Themes/'
 
-import styles from './Styles/NavigationStyles'
+// import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = createStackNavigator({
