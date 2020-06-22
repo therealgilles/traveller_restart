@@ -256,10 +256,9 @@ class TravContainer extends React.Component {
         }
         this.updatePolygons({ isochrons: params })
       }
-    },
-    error => console.error(error),
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-  )}
+    })
+    .catch(error => console.error(error))
+  }
 
   updatePolygons (params) {
     this.setState({ networkActivityIndicatorVisible: true, spinnerVisible: true })

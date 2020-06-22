@@ -121,6 +121,9 @@ export const getGoogleData = (req, keyword) => {
         const values = results.slice(index * divider, (index + 1) * divider)
         return getDistanceData(values, lat, long, mode)
           .then(data => data)
+          .catch(error => {
+            throw new Error(error)
+          })
       })
     )
     .then(dataArray => {
@@ -178,6 +181,10 @@ export const getGoogleData = (req, keyword) => {
       // index 0 to 199 (max)
       // res.status(200).json(finalResults)
       return { ok: true, data: finalResults }
+    })
+    .catch(error => {
+      if (debug) console.tron.error(error)
+      throw new Error(error)
     })
   })
   .catch(error => { if (debug) console.tron.error('server error, check request endpoint') })

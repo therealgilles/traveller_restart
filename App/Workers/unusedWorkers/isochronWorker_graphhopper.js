@@ -75,6 +75,7 @@ const loadIsochron = params => {
 
         return useBoundaryDuration ? resp.data.polygons : resp.data.polygons[0]
       })
+      .catch(err => { throw new Error(err) })
     })
   )
   .then(polygonsArray => {

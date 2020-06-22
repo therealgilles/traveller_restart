@@ -7,35 +7,16 @@ import NetInfo from "@react-native-community/netinfo"
 import DeviceInfo from 'react-native-device-info'
 import { Metrics, Images, Colors } from '../Themes'
 import styles from './Styles/DeviceInfoScreenStyle'
-
-const HARDWARE_DATA = [
-    { title: 'Device Manufacturer', info: DeviceInfo.getManufacturer() },
-    { title: 'Device Name', info: DeviceInfo.getDeviceName() },
-    { title: 'Device Model', info: DeviceInfo.getModel() },
-    { title: 'Device Unique ID', info: DeviceInfo.getUniqueId() },
-    { title: 'User Agent', info: DeviceInfo.getUserAgent() },
-    { title: 'Screen Width', info: Metrics.screenWidth },
-    { title: 'Screen Height', info: Metrics.screenHeight }
-]
-
-const OS_DATA = [
-    { title: 'Device System Name', info: DeviceInfo.getSystemName() },
-    { title: 'Device ID', info: DeviceInfo.getDeviceId() },
-    { title: 'Device Version', info: DeviceInfo.getSystemVersion() }
-]
-
-const APP_DATA = [
-    { title: 'Bundle Id', info: DeviceInfo.getBundleId() },
-    { title: 'Build Number', info: DeviceInfo.getBuildNumber() },
-    { title: 'App Version', info: DeviceInfo.getVersion() },
-    { title: 'App Version (Readable)', info: DeviceInfo.getReadableVersion() }
-]
+import deviceInfoModule from 'react-native-device-info'
 
 export default class DeviceInfoScreen extends React.Component {
     state: {
         isConnected: boolean,
         connectionInfo: Object | null,
-        connectionInfoHistory: Array < any >
+        connectionInfoHistory: Array<any>,
+        hardwareData: Array<any>,
+        osData: Array<any>,
+        appData: Array<any>
     }
 
     constructor(props: Object) {
@@ -46,7 +27,10 @@ export default class DeviceInfoScreen extends React.Component {
         this.state = {
             isConnected: false,
             type: null,
-            details: []
+            details: [],
+            hardwareData: [],
+            osData: [],
+            appData: [],
         }
     }
 
@@ -58,6 +42,40 @@ export default class DeviceInfoScreen extends React.Component {
         NetInfo.fetch().then(state => {
           this.setState({ isConnected: state.isConnected, type: state.type, details: state.details })
         })
+        .catch(err => console.error(err))
+
+        const getDeviceInfo = async () => {
+          try {
+            const hardwareData = [
+                { title: 'Device Manufacturer', info: await DeviceInfo.getManufacturer() },
+                { title: 'Device Name', info: await DeviceInfo.getDeviceName() },
+                { title: 'Device Model', info: DeviceInfo.getModel() },
+                { title: 'Device Unique ID', info: DeviceInfo.getUniqueId() },
+                { title: 'User Agent', info: await DeviceInfo.getUserAgent() },
+                { title: 'Screen Width', info: Metrics.screenWidth },
+                { title: 'Screen Height', info: Metrics.screenHeight }
+            ]
+
+            const osData = [
+                { title: 'Device System Name', info: DeviceInfo.getSystemName() },
+                { title: 'Device ID', info: DeviceInfo.getDeviceId() },
+                { title: 'Device OS Version', info: DeviceInfo.getSystemVersion() }
+            ]
+
+            const appData = [
+                { title: 'Bundle Id', info: DeviceInfo.getBundleId() },
+                { title: 'Build Number', info: DeviceInfo.getBuildNumber() },
+                { title: 'App Version', info: DeviceInfo.getVersion() },
+                { title: 'App Version (Readable)', info: DeviceInfo.getReadableVersion() }
+            ]
+
+            this.setState({ hardwareData, osData, appData })
+          } catch (err) {
+            throw new Error(err)
+          }
+        }
+
+        getDeviceInfo()
 
         // NetInfo.isConnected.addEventListener('connectionChange', this.setConnected)
         // NetInfo.isConnected.fetch().then(this.setConnected)
@@ -124,6 +142,8 @@ export default class DeviceInfoScreen extends React.Component {
     }
 
     render() {
+        const { hardwareData, osData, appData } = this.state
+
         return (
           <View style = { styles.mainContainer }>
             <Image source = { Images.bg } style = { styles.backgroundImage } resizeMode = 'stretch' />
@@ -135,9 +155,9 @@ export default class DeviceInfoScreen extends React.Component {
                     specific to a device.
                   </Text>
                 </View>
-                { this.renderCard('Device Hardware', HARDWARE_DATA) }
-                { this.renderCard('Device OS', OS_DATA) }
-                { this.renderCard('App Info', APP_DATA) }
+                { this.renderCard('Device Hardware', hardwareData) }
+                { this.renderCard('Device OS', osData) }
+                { this.renderCard('App Info', appData) }
                 { this.renderCard('Net Info', this.netInfo()) }
               </ScrollView>
             </View >

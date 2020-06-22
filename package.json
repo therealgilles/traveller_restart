@@ -26,6 +26,7 @@
     "git-hook": "npm run lint -s && npm run test -s"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.3",
@@ -56,7 +57,7 @@
     "react-dom": "16.11.0",
     "react-leaflet": "^2.7.0",
     "react-native": "0.62.2",
-    "react-native-action-button": "mastermoo/react-native-action-button",
+    "react-native-action-button": "git+https://github.com/therealgilles/react-native-action-button.git",
     "react-native-animatable": "^1.3.3",
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-blur": "^3.2.2",
@@ -78,7 +79,6 @@
     "react-native-spinkit": "^1.5.0",
     "react-native-threads": "0.0.19",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-workers": "git+https://github.com/therealgilles/react-native-workers.git#releaseBuildFix",
     "react-navigation": "^4.3.9",
     "react-navigation-drawer": "^2.4.13",
     "react-navigation-redux-helpers": "^4.0.1",

@@ -44,6 +44,7 @@ export default class APITestingScreen extends React.Component {
     this.api[endpoint].apply(this, args).then((result) => {
       this.showResult(result, label || `${endpoint}(${args.join(', ')})`)
     })
+    .catch(err => { throw new Error(err) })
   }
 
   renderButton (apiEndpoint) {

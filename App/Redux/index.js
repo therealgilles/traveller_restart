@@ -32,6 +32,9 @@ export default () => {
       sagasManager.done.then(() => {
         sagasManager = sagaMiddleware.run(newYieldedSagas)
       })
+      .catc(err => {
+        throw new Error(err)
+      })
     })
   }
 

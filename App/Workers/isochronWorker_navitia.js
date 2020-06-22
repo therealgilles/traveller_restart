@@ -109,9 +109,11 @@ const loadIsochron = params => {
             drawIsochron(self, debug, resp.data.isochrones[0], index - 1, downSamplingCoordinates) // we have only one isochrone
           }
         })
+        .catch(err => { throw new Error(err) })
       })
     )
     .then(() => self.postMessage(JSON.stringify({ id: 'done' })))
+    .catch(err => { throw new Error(err) })
   })
   .catch(err => self.postMessage(JSON.stringify({ id: 'error', error: `${provider} region not found [${err}]` })))
 }

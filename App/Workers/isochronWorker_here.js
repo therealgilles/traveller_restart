@@ -123,6 +123,7 @@ const loadIsochron = params => {
           drawIsochron(self, debug, isochron, idx, downSamplingCoordinates)
         }
       })
+      .catch(err => { throw new Error(err) })
     })
   )
   .then(() => self.postMessage(JSON.stringify({ id: 'done' })))
